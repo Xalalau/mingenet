@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 06/03/2022 às 02:04
+-- Tempo de geração: 10/03/2022 às 00:58
 -- Versão do servidor: 5.7.34-log
 -- Versão do PHP: 7.4.27
 
@@ -32,7 +32,7 @@ CREATE TABLE `competing` (
   `ipx` bigint(40) UNSIGNED NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `player_num` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -55,13 +55,6 @@ CREATE TABLE `config` (
   `start_checks_s` int(11) NOT NULL DEFAULT '10'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Despejando dados para a tabela `config`
---
-
-INSERT INTO `config` (`idx`, `version`, `force_disconnect`, `dev_ipx`, `next_lobby_dt`, `cooldown_s`, `playing_time_s`, `max_afk_s`, `tick_s`, `extra_sync_s`, `accept_info_s`, `start_checks_s`) VALUES
-(1, 2, 0, 0, '2022-03-05 20:04:56', 30, 150, 30, 0.18, 5, 5, 5);
-
 -- --------------------------------------------------------
 
 --
@@ -81,7 +74,7 @@ CREATE TABLE `lobby` (
   `start_dt` datetime DEFAULT NULL,
   `end_dt` datetime DEFAULT NULL,
   `status` int(3) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -110,7 +103,7 @@ CREATE TABLE `waiting` (
   `ipx` bigint(40) UNSIGNED NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `player_num` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Índices para tabelas despejadas
@@ -120,7 +113,7 @@ CREATE TABLE `waiting` (
 -- Índices de tabela `competing`
 --
 ALTER TABLE `competing`
-  ADD PRIMARY KEY (`idx`);
+  ADD PRIMARY KEY (`idx`) USING BTREE;
 
 --
 -- Índices de tabela `config`
@@ -132,7 +125,7 @@ ALTER TABLE `config`
 -- Índices de tabela `lobby`
 --
 ALTER TABLE `lobby`
-  ADD PRIMARY KEY (`idx`);
+  ADD PRIMARY KEY (`idx`) USING BTREE;
 
 --
 -- Índices de tabela `statistics`
@@ -144,7 +137,7 @@ ALTER TABLE `statistics`
 -- Índices de tabela `waiting`
 --
 ALTER TABLE `waiting`
-  ADD PRIMARY KEY (`idx`);
+  ADD PRIMARY KEY (`idx`) USING BTREE;
 
 --
 -- AUTO_INCREMENT para tabelas despejadas
