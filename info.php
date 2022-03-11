@@ -21,6 +21,11 @@ if ($is_updated && ! $force_disconnect) {
     if ($next_lobby_s < 0) {
         $next_lobby_s = $config['cooldown_s'];
 
+        if (mt_rand(1, 100) <= 5) {
+            mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=1 WHERE idx=1");
+            $next_lobby_s += 350;
+        }
+
         $new_timestamp = $now_dt->getTimestamp() + $next_lobby_s;
         $new_time_dt = DateTime::createFromFormat('U', $new_timestamp);
         $new_time = $new_time_dt->format('Y-m-d H:i:s');

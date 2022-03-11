@@ -44,6 +44,7 @@ CREATE TABLE `config` (
   `idx` int(11) NOT NULL,
   `version` int(11) NOT NULL DEFAULT '1',
   `force_disconnect` tinyint(1) NOT NULL DEFAULT '0',
+  `is_big_lobby` tinyint(1) NOT NULL DEFAULT '0',
   `dev_ipx` bigint(12) NOT NULL DEFAULT '0',
   `next_lobby_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cooldown_s` int(11) NOT NULL DEFAULT '60',

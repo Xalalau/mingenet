@@ -3,7 +3,7 @@ require "general/header.php";
 require "config/gmc13b.php";
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT dev_ipx, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ipx, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
 $dev_ipx = str_replace(".", "", $config['dev_ipx']);
 
 // Check the time
@@ -53,9 +53,11 @@ if ($candidate_num > 0) {
     }
 
     // Select map and entries randomly
-    // Note: it'll select the developer in case he's doing tests
+    //     It'll select the map with most player if is_big_lobby is true
+    //     It'll select the developer map in case he's doing tests and there are available players
     $candidates_count = count($candidates);
     if ($candidates_count > 0) {
+        // First dev checks
         $competing_dev = mysqli_query($CONNECTION, "SELECT * FROM competing WHERE ipx=$dev_ipx");
         $force_dev_to_play = false;
 
@@ -67,27 +69,59 @@ if ($candidate_num > 0) {
                 $force_dev_to_play = true;
         }
 
+        // Multiple maps available
         if ($candidates_count > 1) {
+            // Select map:
+
+            // Dev map
             if ($force_dev_to_play) { 
                 $selected_map = $competing_dev['map'];
+            // Big lobby
+            } elseif ($config['is_big_lobby']) {
+                $selected_player_num = 0;
+                foreach ($candidates as $map => $ipx_num_list) {
+                    $check_player_num = 0;
+                    foreach ($ipx_num_list as $ipx_num_dict) {
+                        foreach ($ipx_num_dict as $player_num) {
+                            $check_player_num += $player_num;
+                        }
+                    }
+                    if ($check_player_num > $selected_player_num) {
+                        $selected_map = $map;
+                        $selected_player_num = $check_player_num;
+                    }
+                }
+            // Common lobby
             } else {
                 $selected_map = array_rand($candidates);
             }
 
+            // Select players:
+
             $ipx_num_list = $candidates[$selected_map];
-            $selected_entry_num = mt_rand(2, count($ipx_num_list));
-            //$selected_entry_num = 2;
-            //$selected_entry_num = count($ipx_num_list);
-            $chosen_entries = array_rand($ipx_num_list, $selected_entry_num);
+            // Big lobby = all entries
+            if ($config['is_big_lobby']) {
+                $chosen_entries = array_keys($ipx_num_list);
+            // Common lobby = random entries quantity
+            } else  {
+                $selected_entry_num = mt_rand(2, count($ipx_num_list));
+                $chosen_entries = array_rand($ipx_num_list, $selected_entry_num);
+            }
+        // Single map available:
         } else {
             foreach ($candidates as $selected_map => $ipx_num_list) {
-                $selected_entry_num = mt_rand(2, count($ipx_num_list));
-                //$selected_entry_num = 2;
-                //$selected_entry_num = count($ipx_num_list);
-                $chosen_entries = array_rand($ipx_num_list, $selected_entry_num);
+                // Big lobby = all entries
+                if ($config['is_big_lobby']) {
+                    $chosen_entries = array_keys($ipx_num_list);
+                // Common lobby = random entries quantity
+                } else  {
+                    $selected_entry_num = mt_rand(2, count($ipx_num_list));
+                    $chosen_entries = array_rand($ipx_num_list, $selected_entry_num);
+                }
             }
         }
 
+        // Pick the players from the entries
         if ($force_dev_to_play)
             $is_dev_selected = false;
 
@@ -140,6 +174,10 @@ if ($candidate_num > 0) {
 
             // Clean the competing entries list
             mysqli_query($CONNECTION, "TRUNCATE TABLE competing");
+
+            // Clean big lobby config
+            if ($config['is_big_lobby'])
+                mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=0 WHERE idx=1");
         }
     }
 }
