@@ -9,14 +9,19 @@ require "config/gmc13b.php";
         1 = expired
         2 = defeated
 
-    Lobby results
+    Lobby results:
+
         maxtime
         expired
         survived
         nolobby
         defeated
 
-    note: ipx with ent_index can identify a group of players in their game, idx can identify players from other games.
+    In the same GMod server:
+
+        ent_index is used to identify each player because they share the same ipx
+        idx is used to identify each mingebag
+            
 */
 
 // Decode json
