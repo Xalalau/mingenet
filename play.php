@@ -221,12 +221,15 @@ if ($in_fight_count != 0) {
                 ];
             } else {
                 $user_data[$index][$player['idx']] = [
-                    'pos' => $player['pos'],
-                    'ang' => $player['ang'],
-                    'is_firing' => $player['is_firing'],
-                    'used_chat' => $player['used_chat'],
                     'status' => $player['status']
                 ];
+
+                if ($player['status'] == 0) {
+                    $user_data[$index][$player['idx']]['pos'] = $player['pos'];
+                    $user_data[$index][$player['idx']]['ang'] = $player['ang'];
+                    $user_data[$index][$player['idx']]['is_firing'] = $player['is_firing'];
+                    $user_data[$index][$player['idx']]['used_chat'] =$player['used_chat'];
+                }
             }
         }
 
