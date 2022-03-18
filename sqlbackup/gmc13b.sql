@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 10/03/2022 às 00:58
+-- Tempo de geração: 18/03/2022 às 01:18
 -- Versão do servidor: 5.7.34-log
 -- Versão do PHP: 7.4.27
 
@@ -31,7 +31,7 @@ CREATE TABLE `competing` (
   `idx` int(11) NOT NULL,
   `ipx` bigint(40) UNSIGNED NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `player_num` int(11) NOT NULL
+  `player_num` int(7) NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -55,6 +55,13 @@ CREATE TABLE `config` (
   `accept_info_s` int(11) NOT NULL DEFAULT '10',
   `start_checks_s` int(11) NOT NULL DEFAULT '10'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Despejando dados para a tabela `config`
+--
+
+INSERT INTO `config` (`idx`, `version`, `force_disconnect`, `is_big_lobby`, `dev_ipx`, `next_lobby_dt`, `cooldown_s`, `playing_time_s`, `max_afk_s`, `tick_s`, `extra_sync_s`, `accept_info_s`, `start_checks_s`) VALUES
+(1, 3, 0, 0, 0, '2022-03-14 05:01:06', 20, 20, 20, 0.18, 0, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -86,9 +93,10 @@ CREATE TABLE `lobby` (
 CREATE TABLE `statistics` (
   `idx` int(11) NOT NULL,
   `lobby_dt` datetime NOT NULL,
-  `ipx_num` int(11) DEFAULT NULL,
   `map` varchar(100) DEFAULT NULL,
-  `player_num` int(11) DEFAULT NULL,
+  `ipx_num` int(11) DEFAULT NULL,
+  `player_num` int(7) DEFAULT NULL,
+  `killed_player_num` int(7) DEFAULT NULL,
   `playing_time_s` int(11) DEFAULT NULL,
   `result` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -103,7 +111,7 @@ CREATE TABLE `waiting` (
   `idx` int(11) NOT NULL,
   `ipx` bigint(40) UNSIGNED NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `player_num` int(11) NOT NULL
+  `player_num` int(7) NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
