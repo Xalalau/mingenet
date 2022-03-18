@@ -3,7 +3,7 @@ require "general/header.php";
 require "config/gmc13b.php";
 
 /*
-    Player statuss during the lobby:
+    Player status during the lobby:
 
         0 = ongoing
         1 = expired
@@ -236,8 +236,9 @@ if ($in_fight_count != 0) {
 
 // Finish lobby
 if ($final_result) {
-    // Clear ipx (so the player will be able to join other lobbies while keeping their stats accessible on the one the're leaving)
+    // Adjustments for defeated and expired encounters
     if ($final_result == 'defeated' || $final_result == 'expired') {
+        // Clear ipx (so the player will be able to join other lobbies while keeping their stats accessible on the one the're leaving)
         mysqli_query($CONNECTION, "UPDATE lobby SET ipx=0 WHERE ipx=$ipx");
     }
 
@@ -251,15 +252,20 @@ if ($final_result) {
         mysqli_query($CONNECTION, "UPDATE lobby SET end_dt='$new_end' WHERE end_dt='" . $first_entry['end_dt'] . "'");
     }
 
-    // Statistics
+    // Record statistics whenever some group arrives at a result
     $start_dt = new DateTime($first_entry['start_dt']);
     $start_s = $start_dt->getTimestamp();
     $playing_time_s = $now_s - $start_s;
 
-    if ($final_result == "survived" || $final_result == "defeated")
-        $final_result = "finished";
+    if ($final_result == "defeated")
+        $final_result = "expired"; // If we're recording a defeat it has to called expired because that is what it means if the encounter ends with it
 
-    mysqli_query($CONNECTION, "UPDATE statistics SET playing_time_s=$playing_time_s, result='$final_result' WHERE lobby_dt='" . $first_entry["start_dt"] . "'");
+    if ($final_result == "survived")
+        $final_result = "finished"; // Real expected result
+
+    $killed_player_num = mysqli_num_rows(mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE lobby_dt='" . $first_entry["start_dt"] . "'"));
+
+    mysqli_query($CONNECTION, "UPDATE statistics SET playing_time_s=$playing_time_s, result='$final_result', killed_player_num=$killed_player_num WHERE lobby_dt='" . $first_entry["start_dt"] . "'");
 }
 
 require "general/footer.php";
