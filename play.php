@@ -263,7 +263,7 @@ if ($final_result) {
     if ($final_result == "survived")
         $final_result = "finished"; // Real expected result
 
-    $killed_player_num = mysqli_num_rows(mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE lobby_dt='" . $first_entry["start_dt"] . "'"));
+    $killed_player_num = mysqli_num_rows(mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE start_dt='" . $first_entry["start_dt"] . "'"));
 
     mysqli_query($CONNECTION, "UPDATE statistics SET playing_time_s=$playing_time_s, result='$final_result', killed_player_num=$killed_player_num WHERE lobby_dt='" . $first_entry["start_dt"] . "'");
 }
