@@ -30,10 +30,13 @@ foreach ($_POST as $ent_index => $ply_data_json) {
 }
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s, dev_ipx FROM config WHERE idx=1"));
 
 // Ipx
 $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+
+if ($ipx == $config['dev_ipx'])
+    $ipx .= $decoded_post["1"]["dev_test_id"] ?? "";
 
 // Add new players
 function AddNewPlayers($CONNECTION, $decoded_post, $ipx, $first_entry) {

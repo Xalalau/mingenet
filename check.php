@@ -4,7 +4,7 @@ require "config/gmc13b.php";
 
 // Get the config
 $config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ipx, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
-$dev_ipx = str_replace(".", "", $config['dev_ipx']);
+$dev_ipx = $config['dev_ipx'];
 
 // Check the time
 $now_dt = new DateTime(date("Y-m-d H:i:s"));
@@ -184,6 +184,10 @@ if ($candidate_num > 0) {
 
 // Check if the player was selected
 $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+
+if ($ipx == $config['dev_ipx'])
+    $ipx .= $_POST["dev_test_id"] ?? "";
+
 $is_player_selected = mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE ipx=$ipx AND status=0");
 
 if (mysqli_num_rows($is_player_selected) > 0)
