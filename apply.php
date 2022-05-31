@@ -11,9 +11,7 @@ $next_lobby_s = $next_lobby_dt->getTimestamp() - $now_dt->getTimestamp();
 // Insert the entry data if we are in the moment to apply for the lobby
 if ($next_lobby_s <= ($config["accept_info_s"] + $config["start_checks_s"]) && $next_lobby_s >= $config["start_checks_s"]) {
     $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-
-    if ($ipx == $config['dev_ipx'])
-        $ipx .= $_POST["dev_test_id"] ?? "";
+    $ipx .= $_POST["gameID"] ?? ""; // Enables multiple connections from the same IP
 
     $insert = false;
 

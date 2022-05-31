@@ -42,9 +42,7 @@ if ($is_updated && ! $force_disconnect) {
     // Waiting list
     if ($next_lobby_s >= ($config["accept_info_s"] + $config["start_checks_s"])) {
         $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-
-        if ($ipx == $config['dev_ipx']) // I can create multiple unique ids with this and fully test the system myself
-            $ipx .= $_POST["dev_test_id"] ?? "";
+        $ipx .= $_POST["gameID"] ?? ""; // Enables multiple connections from the same IP
 
         $is_entry_already_waiting = mysqli_num_rows(mysqli_query($CONNECTION, "SELECT * FROM waiting WHERE ipx=$ipx"));
 

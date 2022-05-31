@@ -184,9 +184,7 @@ if ($candidate_num > 0) {
 
 // Check if the player was selected
 $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-
-if ($ipx == $config['dev_ipx'])
-    $ipx .= $_POST["dev_test_id"] ?? "";
+$ipx .= $_POST["gameID"] ?? ""; // Enables multiple connections from the same IP
 
 $is_player_selected = mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE ipx=$ipx AND status=0");
 
