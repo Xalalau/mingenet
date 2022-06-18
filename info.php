@@ -41,8 +41,10 @@ if ($is_updated && ! $force_disconnect) {
 
     // Waiting list
     if ($next_lobby_s >= ($config["accept_info_s"] + $config["start_checks_s"])) {
-        $ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-        $ipx .= $_POST["gameID"] ?? ""; // Enables multiple connections from the same IP
+        $gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
+        $ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+        $sub_ip = substr($ip, 0, -4);
+        $ipx = $sub_ip - $gameID;
 
         $is_entry_already_waiting = mysqli_num_rows(mysqli_query($CONNECTION, "SELECT * FROM waiting WHERE ipx=$ipx"));
 

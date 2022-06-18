@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `competing` (
   `idx` int(11) NOT NULL,
-  `ipx` bigint(40) UNSIGNED NOT NULL,
+  `ipx` int(11) NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `player_num` int(7) NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -45,7 +45,7 @@ CREATE TABLE `config` (
   `version` int(11) NOT NULL DEFAULT '1',
   `force_disconnect` tinyint(1) NOT NULL DEFAULT '0',
   `is_big_lobby` tinyint(1) NOT NULL DEFAULT '0',
-  `dev_ipx` bigint(12) NOT NULL DEFAULT '0',
+  `dev_ip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `next_lobby_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cooldown_s` int(11) NOT NULL DEFAULT '60',
   `playing_time_s` int(11) NOT NULL DEFAULT '230',
@@ -60,7 +60,7 @@ CREATE TABLE `config` (
 -- Despejando dados para a tabela `config`
 --
 
-INSERT INTO `config` (`idx`, `version`, `force_disconnect`, `is_big_lobby`, `dev_ipx`, `next_lobby_dt`, `cooldown_s`, `playing_time_s`, `max_afk_s`, `tick_s`, `extra_sync_s`, `accept_info_s`, `start_checks_s`) VALUES
+INSERT INTO `config` (`idx`, `version`, `force_disconnect`, `is_big_lobby`, `dev_ip`, `next_lobby_dt`, `cooldown_s`, `playing_time_s`, `max_afk_s`, `tick_s`, `extra_sync_s`, `accept_info_s`, `start_checks_s`) VALUES
 (1, 3, 0, 0, 0, '2022-03-14 05:01:06', 20, 20, 20, 0.18, 0, 5, 5);
 
 -- --------------------------------------------------------
@@ -71,7 +71,7 @@ INSERT INTO `config` (`idx`, `version`, `force_disconnect`, `is_big_lobby`, `dev
 
 CREATE TABLE `lobby` (
   `idx` int(11) NOT NULL,
-  `ipx` bigint(40) UNSIGNED NOT NULL,
+  `ipx` int(11) NOT NULL,
   `ent_index` int(11) DEFAULT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pos` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE `statistics` (
 
 CREATE TABLE `waiting` (
   `idx` int(11) NOT NULL,
-  `ipx` bigint(40) UNSIGNED NOT NULL,
+  `ipx` int(11) NOT NULL,
   `map` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `player_num` int(7) NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

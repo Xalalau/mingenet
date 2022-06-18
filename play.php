@@ -36,11 +36,13 @@ foreach ($_POST as $ent_index => $ply_data_json) {
 }
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s, dev_ipx FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s FROM config WHERE idx=1"));
 
 // Ipx
-$ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-$ipx .= $decoded_post["1"]["gameID"] ?? ""; // Enables multiple connections from the same IP
+$gameID = $decoded_post["1"]["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
+$ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+$sub_ip = substr($ip, 0, -4);
+$ipx = $sub_ip - $gameID;
 
 // Add new players
 function AddNewPlayers($CONNECTION, $decoded_post, $ipx, $first_entry) {

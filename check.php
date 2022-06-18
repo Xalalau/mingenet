@@ -3,8 +3,12 @@ require "general/header.php";
 require "config/gmc13b.php";
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ipx, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
-$dev_ipx = $config['dev_ipx'];
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ip, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
+
+$gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP - admin only
+$dev_ip = $config['dev_ip'];
+$sub_dev_ip = substr($dev_ip, 0, -4);
+$dev_ipx = $sub_dev_ip - $gameID;
 
 // Check the time
 $now_dt = new DateTime(date("Y-m-d H:i:s"));
@@ -183,8 +187,10 @@ if ($candidate_num > 0) {
 }
 
 // Check if the player was selected
-$ipx = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
-$ipx .= $_POST["gameID"] ?? ""; // Enables multiple connections from the same IP
+$gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
+$ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+$sub_ip = substr($ip, 0, -4);
+$ipx = $sub_ip - $gameID;
 
 $is_player_selected = mysqli_query($CONNECTION, "SELECT idx FROM lobby WHERE ipx=$ipx AND status=0");
 
