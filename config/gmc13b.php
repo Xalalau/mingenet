@@ -7,8 +7,8 @@ if (isset($CONNECTION))
 $db_num = $_GET ? $_GET['db'] : $force_db;
 $sql = array(
     "host" => "localhost",
-    "login" => "gmc13b" . $db_num,
-    "password" => "~Zf&4sFtN59cEh1X",
+    "login" => getenv("DB_USER"),
+    "password" => getenv("DB_PASSWORD"),
     "database" => "gmc13b" . $db_num,
 );
 
