@@ -26,7 +26,7 @@ $candidate_num = mysqli_num_rows($competing_entries);
 
 if ($candidate_num > 0) {
     // Remove older encounters
-    $current_lobby_entries = mysqli_query($CONNECTION, "SELECT DISTINCT idx, end_dt FROM lobby GROUP BY(end_dt)");
+    $current_lobby_entries = mysqli_query($CONNECTION, "SELECT DISTINCT idx, end_dt FROM lobby");
 
     if (mysqli_num_rows($current_lobby_entries) > 0) {
         while ($entry = mysqli_fetch_array($current_lobby_entries)) {
