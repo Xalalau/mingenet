@@ -6,7 +6,7 @@ require "config/gmc13b.php";
 $config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ip, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
 
 $gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP - admin only
-$dev_ip = $config['dev_ip'];
+$dev_ip = str_replace(".", "", $config['dev_ip']);
 $sub_dev_ip = substr($dev_ip, 0, -4);
 $dev_ipx = $sub_dev_ip - $gameID;
 
@@ -69,7 +69,7 @@ if ($candidate_num > 0) {
         if ($is_dev_competing) {
             $competing_dev = mysqli_fetch_array($competing_dev);
             $is_dev_map_valid = in_array($competing_dev['map'], $candidates);
-            if ( ! $is_dev_map_valid)
+            if ($is_dev_map_valid)
                 $force_dev_to_play = true;
         }
 
