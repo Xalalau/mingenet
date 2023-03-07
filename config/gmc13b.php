@@ -6,10 +6,10 @@ if (isset($CONNECTION))
 // Host setup
 $db_num = $_GET ? $_GET['db'] : $force_db;
 $sql = array(
-    "host" => "localhost",
-    "login" => getenv("DB_USER"),
-    "password" => getenv("DB_PASSWORD"),
-    "database" => "gmc13b" . $db_num,
+    "host" => "minge-mariadb",
+    "login" => getenv('MYSQL_USER'),
+    "password" => getenv('MYSQL_PASSWORD'),
+    "database" => "gmc13b" . (float) $db_num,
 );
 
 // Database CONNECTION
