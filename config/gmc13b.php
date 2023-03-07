@@ -5,11 +5,17 @@ if (isset($CONNECTION))
 
 // Host setup
 $db_num = $_GET ? $_GET['db'] : $force_db;
+if (is_numeric($db_num)) {
+    $db_num = (float) $db_num;
+} else {
+    $db_num = 1;
+}
+
 $sql = array(
     "host" => "minge-mariadb",
     "login" => getenv('MYSQL_USER'),
     "password" => getenv('MYSQL_PASSWORD'),
-    "database" => "gmc13b" . (float) $db_num,
+    "database" => "gmc13b" . $db_num,
 );
 
 // Database CONNECTION
