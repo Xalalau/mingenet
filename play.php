@@ -36,7 +36,7 @@ foreach ($_POST as $ent_index => $ply_data_json) {
 }
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s FROM config WHERE idx=$config_idx"));
 
 // Ipx
 $gameID = $decoded_post["1"]["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP

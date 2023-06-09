@@ -2,7 +2,7 @@
 require "general/header.php";
 require "config/gmc13b.php";
 
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT next_lobby_dt, accept_info_s, start_checks_s FROM config WHERE idx='1'"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT next_lobby_dt, accept_info_s, start_checks_s FROM config WHERE idx='$config_idx'"));
 
 $next_lobby_dt = new DateTime($config['next_lobby_dt']);
 $now_dt = new DateTime(date("Y-m-d H:i:s"));

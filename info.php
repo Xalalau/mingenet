@@ -2,7 +2,7 @@
 require "general/header.php";
 require "config/gmc13b.php";
 
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT * FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT * FROM config WHERE idx=$config_idx"));
 
 // Check addon version
 $version = $_POST['version'] ?? "1";
@@ -22,7 +22,7 @@ if ($is_updated && ! $force_disconnect) {
         $next_lobby_s = $config['cooldown_s'];
 
         if (mt_rand(1, 100) <= 5) {
-            mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=1 WHERE idx=1");
+            mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=1 WHERE idx=$config_idx");
             $next_lobby_s += 350;
         }
 
@@ -30,7 +30,7 @@ if ($is_updated && ! $force_disconnect) {
         $new_time_dt = DateTime::createFromFormat('U', $new_timestamp);
         $new_time = $new_time_dt->format('Y-m-d H:i:s');
 
-        mysqli_query($CONNECTION, "UPDATE config SET next_lobby_dt='$new_time' WHERE idx=1");
+        mysqli_query($CONNECTION, "UPDATE config SET next_lobby_dt='$new_time' WHERE idx=$config_idx");
 
         mysqli_query($CONNECTION, "TRUNCATE TABLE waiting");
         mysqli_query($CONNECTION, "TRUNCATE TABLE competing");

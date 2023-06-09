@@ -3,7 +3,7 @@ require "general/header.php";
 require "config/gmc13b.php";
 
 // Get the config
-$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ip, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=1"));
+$config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT is_big_lobby, dev_ip, next_lobby_dt, start_checks_s, playing_time_s FROM config WHERE idx=$config_idx"));
 
 $gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP - admin only
 $dev_ip = str_replace(".", "", $config['dev_ip']);
@@ -181,7 +181,7 @@ if ($candidate_num > 0) {
 
             // Clean big lobby config
             if ($config['is_big_lobby'])
-                mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=0 WHERE idx=1");
+                mysqli_query($CONNECTION, "UPDATE config SET is_big_lobby=0 WHERE idx=$config_idx");
         }
     }
 }

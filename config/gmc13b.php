@@ -28,4 +28,7 @@ if ( ! isset($CONNECTION)) {
 
 // Charset
 SetCharset($CONNECTION);
+
+// Config
+$config_idx = 1
 ?>
