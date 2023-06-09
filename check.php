@@ -37,9 +37,6 @@ if ($candidate_num > 0) {
         }
     }
 
-    // Statistics: record candidates quantity
-    mysqli_query($CONNECTION, "UPDATE statistics SET candidate_num='$candidate_num' WHERE lobby_dt='".$config["next_lobby_dt"]."'");
-
     // Split entries by map getting only 1 entry per server
     $candidates = [];
     $servers = [];
