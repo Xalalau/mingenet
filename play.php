@@ -262,6 +262,7 @@ if ($in_fight_count != 0) {
     }
 // The player isn't in a lobby
 } else {
+    sleep(2); // Hack to ensure this result won't show up in the wrong time
     echo json_encode([ 'result' => 'nolobby' ]);
 }
 
@@ -269,7 +270,7 @@ if ($in_fight_count != 0) {
 if ($final_result) {
     // Adjustments for defeated and expired encounters
     if ($final_result == 'defeated' || $final_result == 'unsolved') {
-        // Clear ipx (so the player will be able to join other lobbies while keeping their stats accessible on the one the're leaving)
+        // Clear ipx (so the player will be able to join other lobbies while keeping his stats accessible on the one he's leaving)
         mysqli_query($CONNECTION, "UPDATE lobby SET ipx=0 WHERE ipx=$ipx");
     }
 
