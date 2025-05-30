@@ -185,7 +185,7 @@ if ($candidate_num > 0) {
 
 // Check if the player was selected
 $gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
-$ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+$ip = str_replace(".", "", $_SERVER['HTTP_X_FORWARDED_FOR']);
 $sub_ip = substr($ip, 0, -4);
 $ipx = $sub_ip - $gameID;
 

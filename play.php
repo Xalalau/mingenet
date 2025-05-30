@@ -40,7 +40,7 @@ $config = mysqli_fetch_array(mysqli_query($CONNECTION, "SELECT max_afk_s FROM co
 
 // Ipx
 $gameID = $decoded_post["1"]["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
-$ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+$ip = str_replace(".", "", $_SERVER['HTTP_X_FORWARDED_FOR']);
 $sub_ip = substr($ip, 0, -4);
 $ipx = $sub_ip - $gameID;
 

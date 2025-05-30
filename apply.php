@@ -13,7 +13,7 @@ if ($next_lobby_s <= ($config["accept_info_s"] + $config["start_checks_s"]) &&
     $next_lobby_s >= $config["start_checks_s"]) {
 
     $gameID = $_POST["gameID"] ?? ""; // Enable multiple game instances to connect from the same IP
-    $ip = str_replace(".", "", $_SERVER['HTTP_CF_CONNECTING_IP']);
+    $ip = str_replace(".", "", $_SERVER['HTTP_X_FORWARDED_FOR']);
     $sub_ip = substr($ip, 0, -4);
     $ipx = $sub_ip - $gameID;
 
